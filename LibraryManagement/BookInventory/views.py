@@ -10,7 +10,8 @@ def library(request):
     return render(request, 'library.html')
 @login_required
 def inventory(request):
-    return render(request, 'inventory.html')
+    latest_books = Book.objects.order_by('-id')[:5]
+    return render(request, 'inventory.html', {'latest_books' : latest_books})
 
 def login_view(request):
     if request.method == 'POST':
