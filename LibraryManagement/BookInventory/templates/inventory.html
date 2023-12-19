@@ -45,28 +45,69 @@
         </ul>
       </div>
     </nav>
-<!--page content-->
-<div class="container mt-5">
-  <div class="jumbotron">
-    <h1 class="display-4">Welcome to Book Inventory!</h1>
-    <p class="lead">
-      This is a simple system for managing a book inventory. You can add new
-      books, add new authors, and view the library.
-    </p>
-    <hr class="my-4" />
-    <p>Here are the most recently added books:</p>
-    <ul class="list-group">
-      {% for book in latest_books %}
-      <li class="list-group-item">
-        <h5 class="mb-1"><strong>{{ book.title }}</strong></h5>
-        <small>by {{ book.author.name }}</small>
-        <p class="mb-1">{{ book.publication_date|date:"F j, Y" }}</p>
-      </li>
-      {% endfor %}
+    <!--page content-->
+    <div class="container mt-5">
+      <div class="jumbotron">
+        <h1 class="display-4">Welcome to Book Inventory!</h1>
+        <p class="lead">
+          This is a simple system for managing a book inventory. You can add new
+          books, add new authors, and view the library.
+        </p>
+        <hr class="my-4" />
+        <p>Here are the most recently added books:</p>
+        <ul class="list-group">
+          {% for book in page_obj %}
+          <li class="list-group-item">
+            <h5 class="mb-1"><strong>{{ book.title }}</strong></h5>
+            <small>by {{ book.author.name }}</small>
+            <p class="mb-1">{{ book.publication_date|date:"F j, Y" }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+       <div class="pagination">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">Previous</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">Next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
     </ul>
-  </div>
 </div>
-<!--end of page content -->
+      </div>
+    </div>
+    <!--end of page content -->
     <!-- Add Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>

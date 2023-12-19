@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
 from .models import Author, Book
 
 @login_required
@@ -11,8 +12,19 @@ def library(request):
 @login_required
 def inventory(request):
     latest_books = Book.objects.order_by('-id')[:5]
-    return render(request, 'inventory.html', {'latest_books' : latest_books})
+    paginator = Paginator(latest_books, 4)
 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'latest_books': latest_books,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'inventory.html', context)
+
+    
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
