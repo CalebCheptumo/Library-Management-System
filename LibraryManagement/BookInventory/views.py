@@ -62,10 +62,15 @@ def book_form_view(request):
 
         if title and author_id and publication_date and isbn:
             author = Author.objects.get(id=author_id)
-            book = Book(title=title, author=author, publication_date=publication_date, isbn=isbn, available=available)
-            book.save()
-            messages.success(request, 'Book added successfully')
-            return redirect('book_form')
+            if Book.objects.filter(title=title).exists():
+                messages.warning(request, 'Book with this title already exists')
+            if Book.objects.filter(isbn=isbn).exists():
+                messages.warning(request, 'Book with this ISBN already exists')
+            if not messages.get_messages(request):
+                book = Book(title=title, author=author, publication_date=publication_date, isbn=isbn, available=available)
+                book.save()
+                messages.success(request, 'Book added successfully')
+                return redirect('book_form')
         else:
             messages.warning(request, 'Please fill in all required fields')
-    return render(request, 'book_form.html', {'authors': authors})
+    return render(request, 'book_form.html', {'authors': authors, 'form_data': form_data})
