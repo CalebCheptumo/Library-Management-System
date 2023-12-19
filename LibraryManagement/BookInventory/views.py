@@ -30,9 +30,12 @@ def author_form_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         if name:  # Check if name is not empty
-            author = Author(name=name)
-            author.save()
-            messages.success(request, 'Author added successfully')
+            if Author.objects.filter(name=name).exists():
+                messages.warning(request, 'Author with this name already exists')
+            else:
+                author = Author(name=name)
+                author.save()
+                messages.success(request, 'Author added successfully')
             return redirect('author_form')
         else:
             messages.warning(request, 'Please fill in all required fields')
