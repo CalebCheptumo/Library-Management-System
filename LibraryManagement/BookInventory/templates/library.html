@@ -43,9 +43,26 @@
         </ul>
       </div>
     </nav>
+    <!--page content-->
     <div class="container mt-5">
       <!-- Your page content goes here -->
+      <div class="jumbotron">
+        <h1 class="display-4">Welcome to the Library Management System!</h1>
+        <p class="lead">
+          This is a simple system for managing a library. You can add new books,
+          add new authors, and view the book inventory.
+        </p>
+        <hr class="my-4" />
+        <p>Click on "Book Inventory" to view the most recently added books.</p>
+        <a
+          class="btn btn-primary btn-lg"
+          href="{% url 'book_inventory' %}"
+          role="button"
+          >View Book Inventory</a
+        >
+      </div>
     </div>
+    <!--end page content-->
     {% endblock %}
     <!-- Add Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
